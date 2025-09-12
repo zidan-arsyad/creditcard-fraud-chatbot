@@ -3,7 +3,6 @@
 A **Streamlit-based conversational AI assistant** for analyzing credit card fraud data and documentation.  
 Uses **LLM agents**, **SQL**, and **vector search** to answer queries interactively.
 
-
 ## 🌟 Features
 
 - 🗨️ Chat UI with Streamlit
@@ -44,23 +43,27 @@ src/
 ## 🚀 Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/creditcard-fraud-chat.git
 cd creditcard-fraud-chat
 ```
 
 2. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 3. Set up environment variables:
+
 ```bash
 export GROQ_API_KEY=your_groq_key
 export LANGSMITH_API_KEY=your_langsmith_key  # optional
 ```
 
 4. Run the application:
+
 ```bash
 # Simple mode
 streamlit run src/start_simple.py
@@ -90,7 +93,7 @@ streamlit run src/start_adv.py # [in construction] wait until this README.md get
    - SQL Tool: For data analysis and statistical queries
    - Document Tool: For questions about fraud documentation and policies
 
-3. **Query Execution**: 
+3. **Query Execution**:
    - SQL queries are executed against the SQLite database
    - Document queries use FAISS vector store for similarity search
    - Results are processed and formatted for user presentation
