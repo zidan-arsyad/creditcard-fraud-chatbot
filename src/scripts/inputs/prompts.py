@@ -13,7 +13,7 @@ Separate the user input if there are multiple requests.
 For each request, do the following:
 - Read user original input and try to understand the underlying semantic intent.
 - Try look at recent conversation history to find the relevancy to current input.
-- Keep in mind who said which. Message with role="assistant" is from LLM. Message with role="user" is from the user. Try to assume which message from which role is the user referring to. Do not put words in the user's mouth as they say in idiom.
+- Keep in mind who said which. Message with role="assistant" is from LLM. Message with role="user" is from the user. Try to assume which message from which role is the user referring to.
 - The next agent doesn't have the privilege to see conversation history. So if the history is relevant, append the corresponding snippet to the request.
 - Reassess the final request wording and make sure it contains the information that's needed.
 - Evaluate that the cited info are not too far off from the original user input.
