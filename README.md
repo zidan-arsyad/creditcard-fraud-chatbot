@@ -1,39 +1,44 @@
-# Credit Card Fraud Detection Chatbot
+# 💳 Credit Card Fraud Detection Chatbot
 
-A Streamlit-powered conversational AI assistant that helps analyze credit card fraud data and documentation using LLM agents, vector stores, and SQL queries.
+A **Streamlit-based conversational AI assistant** for analyzing credit card fraud data and documentation.  
+Uses **LLM agents**, **SQL**, and **vector search** to answer queries interactively.
+
 
 ## 🌟 Features
 
-- Interactive chat interface built with Streamlit
-- Powered by Groq's Llama 4 language model
-- Multi-tool agent system for handling different types of queries
-- SQL database integration for fraud data analysis
-- Document Q&A capabilities using vector similarity search
-- Automated tool selection based on user queries
+- 🗨️ Chat UI with Streamlit
+- 🧠 Groq Llama 4 LLM (configurable)
+- 🛠 Multi-tool agent system (SQL + Document)
+- 📊 SQLite3 database integration
+- 📚 Document Q&A via FAISS vector store
+- 🔎 Monitoring with LangSmith
+- ⚡ Two modes: **Simple** (1 agent) & **Advanced** (multi-agent)
 
-## 🛠️ Technical Stack
+## 🛠 Technical Stack
 
-- **Frontend**: Streamlit
-- **Language Model**: Groq Llama 4
-- **Database**: SQLite3
-- **Vector Store**: FAISS
-- **Embeddings**: Hugging Face Embeddings
-- **Agent Framework**: LangChain
+- **Frontend:** Streamlit  
+- **LLM:** Groq Llama 4  
+- **Database:** SQLite3  
+- **Vector Store:** FAISS  
+- **Embeddings:** Hugging Face  
+- **Agent Framework:** LangChain  
+- **Monitoring:** LangSmith
 
 ## 📁 Project Structure
 
 ```
 src/
-├── data/                      # Data storage and processing
-│   ├── documents/            # PDF documentation
+├── data/                    # Data storage and processing
+│   ├── documents/           # PDF documentation
 │   ├── processed/           # Processed data files
 │   └── raw/                 # Raw CSV datasets
 ├── scripts/
-│   ├── agents/             # Agent implementations
-│   ├── inputs/             # Prompt templates
-│   ├── tools/              # Tool definitions
-│   └── utils/              # Utility functions
-└── start_simple.py         # Main application entry point
+│   ├── agents/              # Agent implementations
+│   ├── inputs/              # Prompt templates
+│   ├── tools/               # Tool definitions
+│   └── utils/               # Utility functions
+│── start_simple.py          # Main application entry point
+└── start_adv.py             # Multi-agent entry point
 ```
 
 ## 🚀 Getting Started
@@ -51,15 +56,33 @@ pip install -r requirements.txt
 
 3. Set up environment variables:
 ```bash
-GROQ_API_KEY=your_api_key_here
+export GROQ_API_KEY=your_groq_key
+export LANGSMITH_API_KEY=your_langsmith_key  # optional
 ```
 
 4. Run the application:
 ```bash
+# Simple mode
 streamlit run src/start_simple.py
+
+# Advanced mode
+streamlit run src/start_adv.py
 ```
 
-## 💡 How It Works
+## 🧠 Simple vs Advanced Mode
+
+| Mode           | How It Works                                   | Pros                              | Cons                                |
+|---------------|-----------------------------------------------|----------------------------------|------------------------------------|
+| **Simple**    | Single `MainAgent` with combined prompt + tools | ✅ Easy to deploy<br>✅ Fewer components<br>✅ Fast | ❌ Harder to debug<br>❌ Long prompt |
+| **Advanced**  | Preprocessor → Supervisor → SQL & Doc agents    | ✅ Modular<br>✅ Easier to debug<br>✅ Extensible | ❌ More config<br>❌ Slightly slower |
+
+## 📊 Architecture Graphs
+
+| Simple Mode | Advanced Mode |
+|-------------|---------------|
+| ![Simple](https://i.pinimg.com/474x/16/3d/cb/163dcb920d747eb5e11490f8551561b8.jpg) | ![Advanced](https://i.pinimg.com/474x/d4/ca/d3/d4cad3ce8291e975963106d6e59f3296.jpg) |
+
+## 💡 How It Works (Simple)
 
 1. **User Input Processing**: The system receives natural language queries about credit card fraud.
 
@@ -80,13 +103,10 @@ streamlit run src/start_simple.py
 
 ## 🔍 Query Examples
 
-- "Show me the distribution of fraudulent transactions by amount"
+- "Show me the distribution of fraudulent transactions by amount."
 - "What are the main types of credit card fraud according to the EBA report?"
-- "Calculate the fraud rate for transactions above $1000"
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- "Calculate the fraud rate for transactions above $1000."
+- "List top 10 highest-risk users in the last 30 days."
 
 ## 🙏 Acknowledgments
 
