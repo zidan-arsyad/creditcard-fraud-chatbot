@@ -72,7 +72,9 @@ def _create_vector_stores(documents):
     from langchain_community.docstore import InMemoryDocstore
     import faiss
 
-    embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    embedding = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-mpnet-base-v2"
+    )
     index = faiss.IndexFlatL2(len(embedding.embed_query("placeholder")))
 
     vector_store = FAISS(
@@ -103,7 +105,9 @@ def get_vector_stores(replace=False, folder_path=None, file_type=".pdf"):
     if folder_path is None:
         folder_path = DATA_DIR
 
-    embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    embedding = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-mpnet-base-v2"
+    )
     vector_store_path = os.path.join(folder_path, f"{file_type.strip('.')}_docs_vector")
 
     is_vector_exists = os.path.exists(vector_store_path)
@@ -117,7 +121,11 @@ def get_vector_stores(replace=False, folder_path=None, file_type=".pdf"):
             print("[WARNING] No documents found. Vector store not saved.")
             return None
     else:
-        vector_store = FAISS.load_local(vector_store_path, embeddings=embedding)
+        vector_store = FAISS.load_local(
+            vector_store_path,
+            embeddings=embedding,
+            allow_dangerous_deserialization=True,
+        )
         print(f"[INFO] Loaded FAISS vector store from {vector_store_path}")
 
     return vector_store
