@@ -1,68 +1,79 @@
 import os
-from langchain_community.document_loaders.generic import GenericLoader
-from langchain_community.document_loaders import FileSystemBlobLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_pymupdf4llm import PyMuPDF4LLMParser
 
-import faiss
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.docstore import InMemoryDocstore
-from langchain_core.vectorstores import InMemoryVectorStore
+# === Base Paths ===
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "..", "data", "processed")
 
 
 def _parse_document(file_path):
     """Parse a document file into pages."""
+    from langchain_community.document_loaders.generic import GenericLoader
+    from langchain_community.document_loaders import FileSystemBlobLoader
+    from langchain_pymupdf4llm import PyMuPDF4LLMParser
 
     loader = GenericLoader(
         blob_loader=FileSystemBlobLoader(path=file_path),
-        blob_parser=PyMuPDF4LLMParser(
-            mode="page",
-        ),
+        blob_parser=PyMuPDF4LLMParser(mode="page"),
     )
-    pages = []
-    for doc in loader.lazy_load():
-        pages.append(doc)
-    return pages
+    return list(loader.lazy_load())
 
 
-def _get_documents_from_folder(folder_path, file_type):
-    """Load all PDF documents from a folder and parse them into pages."""
+def _get_documents_from_folder(folder_path=None, file_type=".pdf"):
+    """Load all documents from a folder and parse them into pages."""
 
-    documents_list = os.listdir(folder_path)
-    print(f"Found {len(documents_list)} documents in folder {folder_path}")
+    if folder_path is None:
+        folder_path = DATA_DIR
+
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path, exist_ok=True)
+        print(f"[INFO] Created missing folder: {folder_path}")
+        return []
+
+    all_files = os.listdir(folder_path)
+    files = [f for f in all_files if f.lower().endswith(file_type)]
+
+    if not files:
+        print(f"[WARNING] No {file_type.upper()} files found in {folder_path}.")
+        return []
 
     documents = []
-    for filename in documents_list:
-        if filename.endswith(file_type):
-            file_path = os.path.join(folder_path, filename)
-            document = _parse_document(file_path)
-            documents.extend(document)
-    print(f"Total document pages loaded: {len(documents)}")  # Number of pages parsed
+    for filename in files:
+        file_path = os.path.join(folder_path, filename)
+        documents.extend(_parse_document(file_path))
+
+    print(f"[INFO] Loaded {len(documents)} pages from {len(files)} files.")
     return documents
 
 
 def _split_documents(documents):
     """Split documents into smaller chunks for better retrieval performance."""
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+    if not documents:
+        return []
 
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,  # chunk size (characters)
-        chunk_overlap=200,  # chunk overlap (characters)
-        add_start_index=True,  # track index in original document
+        chunk_size=1000,
+        chunk_overlap=200,
+        add_start_index=True,
     )
-    docs_splits = text_splitter.split_documents(documents)
-
-    print(f"Total document splits: {len(docs_splits)}")  # Number of chunks created
-    return docs_splits
+    splits = text_splitter.split_documents(documents)
+    print(f"[INFO] Total splits created: {len(splits)}")
+    return splits
 
 
 def _create_vector_stores(documents):
     """Create a vector store from documents for semantic search."""
+    if not documents:
+        print("[WARNING] No documents to embed. Returning empty vector store.")
 
-    embedding = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2"
-    )
-    index = faiss.IndexFlatL2(len(embedding.embed_query("mekari technical test")))
+    from langchain_community.vectorstores import FAISS
+    from langchain_huggingface import HuggingFaceEmbeddings
+    from langchain_community.docstore import InMemoryDocstore
+    import faiss
+
+    embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    index = faiss.IndexFlatL2(len(embedding.embed_query("placeholder")))
 
     vector_store = FAISS(
         embedding_function=embedding,
@@ -71,46 +82,42 @@ def _create_vector_stores(documents):
         index_to_docstore_id={},
     )
 
-    documents_splitted = _split_documents(documents)
+    splits = _split_documents(documents)
+    if splits:
+        vector_store.add_documents(splits)
 
-    vector_store = InMemoryVectorStore(embedding=embedding)
-    _ = vector_store.add_documents(documents_splitted)
-
-    print(f"Created vector store: {vector_store}")
     return vector_store
 
 
-def _documents_ingest(folder_path="data/documents", file_type=".pdf"):
-    """Ingest PDF documents from a folder and create a vector store."""
-
-    folder_path = folder_path
+def _documents_ingest(folder_path=None, file_type=".pdf"):
+    """Ingest documents from folder and build vector store."""
     documents = _get_documents_from_folder(folder_path, file_type)
-    vector_store = _create_vector_stores(documents)
-    return vector_store
+    return _create_vector_stores(documents)
 
 
-def get_vector_stores(replace=False, folder_path="data/processed", file_type=".pdf"):
-    """Get or create a vector store, optionally replacing the existing one."""
+def get_vector_stores(replace=False, folder_path=None, file_type=".pdf"):
+    """Get or create a FAISS vector store, optionally replacing existing one."""
+    from langchain_huggingface import HuggingFaceEmbeddings
+    from langchain_community.vectorstores import FAISS
 
-    embedding = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2"
-    )
-    vector_store = InMemoryVectorStore(embedding=embedding)
+    if folder_path is None:
+        folder_path = DATA_DIR
 
-    file_path = f"{folder_path}/{file_type.split('.')[1]}DocsVector"
-    isVectorExists = os.path.exists(file_path)
+    embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    vector_store_path = os.path.join(folder_path, f"{file_type.strip('.')}_docs_vector")
 
-    # If replace is True or vector store file does not exist, create a new vector store
-    # Otherwise, load the existing vector store from disk
-    if replace or not isVectorExists:
+    is_vector_exists = os.path.exists(vector_store_path)
+
+    if replace or not is_vector_exists:
         vector_store = _documents_ingest(folder_path=folder_path, file_type=file_type)
-        print(f"New vector type: {type(vector_store)}")
-        vector_store.dump(file_path)
-        print(f"Saved vector store to disk at {file_path}")
+        if vector_store:
+            vector_store.save_local(vector_store_path)
+            print(f"[INFO] Saved FAISS vector store at {vector_store_path}")
+        else:
+            print("[WARNING] No documents found. Vector store not saved.")
+            return None
     else:
-        vector_store = vector_store.load(
-            file_path,
-            embedding=embedding,
-        )
-        print(f"Loaded vector store from disk at {file_path}")
+        vector_store = FAISS.load_local(vector_store_path, embeddings=embedding)
+        print(f"[INFO] Loaded FAISS vector store from {vector_store_path}")
+
     return vector_store

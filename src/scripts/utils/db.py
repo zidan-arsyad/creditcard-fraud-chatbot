@@ -1,11 +1,15 @@
+import os
 import sqlite3
 from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
 from langchain_community.utilities.sql_database import SQLDatabase
 
-
 def get_db():
-    with sqlite3.connect("data/processed/fraudDB.db", check_same_thread=False) as con:
+    base_dir = os.path.dirname(os.path.dirname(__file__))  # go up from utils to src
+    db_path = os.path.join(base_dir, "..", "data", "processed", "fraudDB.db")
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)  # ensure folder exists
+
+    with sqlite3.connect(db_path, check_same_thread=False) as con:
         engine = create_engine(
             "sqlite:///",
             creator=lambda: con,
