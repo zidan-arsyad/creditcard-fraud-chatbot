@@ -15,13 +15,15 @@ Uses **LLM agents**, **SQL**, and **vector search** to answer queries interactiv
 
 ## 🛠 Technical Stack
 
-- **Frontend:** Streamlit  
-- **LLM:** Groq Llama 4  
-- **Database:** SQLite3  
-- **Vector Store:** FAISS  
-- **Embeddings:** Hugging Face  
-- **Agent Framework:** LangChain  
-- **Monitoring:** LangSmith
+| Component      | Tool / Library |
+|---------------|----------------|
+| **Frontend**  | Streamlit |
+| **LLM**       | Groq Llama 4 |
+| **Database**  | SQLite3 |
+| **Vector DB** | FAISS |
+| **Embeddings**| Hugging Face |
+| **Framework** | LangChain |
+| **Monitoring**| LangSmith |
 
 ## 📁 Project Structure
 
@@ -39,6 +41,29 @@ src/
 │── start_simple.py          # Main application entry point
 └── start_adv.py             # Multi-agent entry point
 ```
+
+## 🧰 Preparation
+
+Before running the project, download the required datasets:
+
+1. Go to [Kaggle Fraud Detection Dataset](https://www.kaggle.com/datasets/kartik2112/fraud-detection/data?select=fraud%20dataset)
+2. Download **fraudTrain.csv** and **fraudTest.csv**
+3. Place them inside:
+   
+```
+src/data/raw/
+```
+
+Your project structure should look like:
+
+```
+src/data/raw/
+├── fraudTrain.csv
+└── fraudTest.csv
+```
+
+4. Follow the steps in `src/data/csv_to_db.ipynb` to convert CSV files into SQLite3 database
+
 
 ## 🚀 Getting Started
 
