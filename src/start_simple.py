@@ -48,8 +48,6 @@ if user_input:
 
     message_input = {"role": "user", "content": user_input}
     st.session_state.messages.append(message_input)
-
-    # update the message ui
     print_chat(message_input)
 
     try:
