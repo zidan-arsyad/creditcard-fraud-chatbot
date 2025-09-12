@@ -80,7 +80,7 @@ streamlit run src/start_adv.py
 
 | Simple Mode | Advanced Mode |
 |-------------|---------------|
-| ![Simple](https://i.pinimg.com/474x/16/3d/cb/163dcb920d747eb5e11490f8551561b8.jpg) | ![Advanced](https://i.pinimg.com/474x/d4/ca/d3/d4cad3ce8291e975963106d6e59f3296.jpg) |
+| ![Simple](https://i.pinimg.com/474x/16/3d/cb/163dcb920d747eb5e11490f8551561b8.jpg) | ![Advanced](https://camo.githubusercontent.com/3396240bff15f09c0c6ab76bc471043812867b5d2ee8fc9588da0f3785b8feef/68747470733a2f2f692e70696e696d672e636f6d2f343734782f64342f63612f64332f64346361643363653832393165393735393633313036643665353966333239362e6a7067) |
 
 ## 💡 How It Works (Simple)
 
