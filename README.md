@@ -84,16 +84,13 @@ streamlit run src/start_simple.py
 - "What are the main types of credit card fraud according to the EBA report?"
 - "Calculate the fraud rate for transactions above $1000"
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
+- Mekari for the opportunity
 - Groq for providing the LLM API
 - LangChain for the agent framework
 - Hugging Face for embeddings
