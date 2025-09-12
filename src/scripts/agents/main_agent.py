@@ -6,11 +6,11 @@ from scripts.tools.doc_tool import get_doc_tool
 
 
 class MainAgent:
-    def __init__(self, llm, limit_memory=10):
+    def __init__(self, llm, memory_limit=50):
         self.llm = llm
         self.memory = ConversationBufferWindowMemory(
             memory_key="history",
-            k=limit_memory,
+            k=memory_limit,
             return_messages=True,
         )
 
@@ -23,6 +23,6 @@ class MainAgent:
             tools=sql_tool + [doc_tool],
             prompt=MAIN_AGENT_PROMPT,
         )
-        main_agent.memory=self.memory
+        main_agent.memory = self.memory
         
         return main_agent
