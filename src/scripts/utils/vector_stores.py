@@ -73,7 +73,8 @@ def _create_vector_stores(documents):
     import faiss
 
     embedding = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2"
+        model_name="sentence-transformers/all-mpnet-base-v2",
+        model_kwargs={"device": "cpu"}
     )
     index = faiss.IndexFlatL2(len(embedding.embed_query("placeholder")))
 
@@ -106,7 +107,8 @@ def get_vector_stores(replace=False, folder_path=None, file_type=".pdf"):
         folder_path = DATA_DIR
 
     embedding = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2"
+        model_name="sentence-transformers/all-mpnet-base-v2",
+        model_kwargs={"device": "cpu"}
     )
     vector_store_path = os.path.join(folder_path, f"{file_type.strip('.')}_docs_vector")
 
