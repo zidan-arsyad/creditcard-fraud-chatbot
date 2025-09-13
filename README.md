@@ -39,8 +39,9 @@ src/
 │   ├── tools/               # Tool definitions
 │   └── utils/               # Utility functions
 └── start_simple.py          # Main application entry point
-<!-- └── start_adv.py             # Multi-agent entry point (not yet works) -->
 ```
+<!-- └── start_adv.py             # Multi-agent entry point (not yet works) -->
+<!-- ``` -->
 
 ## 🧰 Preparation
 
