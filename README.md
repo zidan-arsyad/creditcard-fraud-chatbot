@@ -38,8 +38,8 @@ src/
 │   ├── inputs/              # Prompt templates
 │   ├── tools/               # Tool definitions
 │   └── utils/               # Utility functions
-│── start_simple.py          # Main application entry point
-└── start_adv.py             # Multi-agent entry point
+└── start_simple.py          # Main application entry point
+<!-- └── start_adv.py             # Multi-agent entry point (not yet works) -->
 ```
 
 ## 🧰 Preparation
@@ -97,18 +97,18 @@ streamlit run src/start_simple.py
 streamlit run src/start_adv.py # [in construction] wait until this README.md gets updated again
 ```
 
-## 🧠 Simple vs Advanced Mode
+<!-- ## 🧠 Simple vs Advanced Mode
 
 | Mode           | How It Works                                   | Pros                              | Cons                                |
 |---------------|-----------------------------------------------|----------------------------------|------------------------------------|
 | **Simple**    | Single `MainAgent` with combined prompt + tools | ✅ Easy to deploy<br>✅ Fewer components<br>✅ Fast | ❌ Harder to debug<br>❌ Long prompt |
-| **Advanced**  | Preprocessor → Supervisor → SQL & Doc agents    | ✅ Modular<br>✅ Easier to debug<br>✅ Extensible | ❌ More config<br>❌ Slightly slower |
+| **Advanced**  | Preprocessor → Supervisor → SQL & Doc agents    | ✅ Modular<br>✅ Easier to debug<br>✅ Extensible | ❌ More config<br>❌ Slightly slower | -->
 
-## 📊 Architecture Graphs
+<!-- ## 📊 Architecture Graphs
 
 | Simple Mode (Placeholder) | Advanced Mode (Placeholder) |
 |-------------|---------------|
-| ![Simple](https://i.pinimg.com/474x/16/3d/cb/163dcb920d747eb5e11490f8551561b8.jpg) | ![Advanced](https://camo.githubusercontent.com/3396240bff15f09c0c6ab76bc471043812867b5d2ee8fc9588da0f3785b8feef/68747470733a2f2f692e70696e696d672e636f6d2f343734782f64342f63612f64332f64346361643363653832393165393735393633313036643665353966333239362e6a7067) |
+| ![Simple](https://i.pinimg.com/474x/16/3d/cb/163dcb920d747eb5e11490f8551561b8.jpg) | ![Advanced](https://camo.githubusercontent.com/3396240bff15f09c0c6ab76bc471043812867b5d2ee8fc9588da0f3785b8feef/68747470733a2f2f692e70696e696d672e636f6d2f343734782f64342f63612f64332f64346361643363653832393165393735393633313036643665353966333239362e6a7067) | -->
 
 ## 💡 How It Works (Simple)
 
