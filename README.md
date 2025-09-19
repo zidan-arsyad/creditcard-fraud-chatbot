@@ -144,3 +144,5 @@ streamlit run src/start_adv.py # [in construction] wait until this README.md get
 - LangChain for the agent framework
 - Hugging Face for embeddings
 - FAISS for vector similarity search
+- LangSmith for visibility monitoring
+
