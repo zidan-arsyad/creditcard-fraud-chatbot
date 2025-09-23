@@ -12,8 +12,6 @@ class LLM:
             "meta-llama/llama-4-maverick-17b-128e-instruct",
             model_provider="groq",
             temperature=0.0,
-            max_retries=3,
-            timeout=10,
         )
 
     def get_llm(self):
