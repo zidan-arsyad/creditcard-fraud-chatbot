@@ -2,7 +2,8 @@ import os
 
 # === Base Paths ===
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(BASE_DIR, "..", "data", "processed")
+DATA_DIR = os.path.join(BASE_DIR, "..", "data", "documents")
+VECTOR_DIR = os.path.join(BASE_DIR, "..", "data", "processed")
 
 
 def _parse_document(file_path):
@@ -18,16 +19,8 @@ def _parse_document(file_path):
     return list(loader.lazy_load())
 
 
-def _get_documents_from_folder(folder_path=None, file_type=".pdf"):
+def _get_documents_from_folder(folder_path, file_type=".pdf"):
     """Load all documents from a folder and parse them into pages."""
-
-    if folder_path is None:
-        folder_path = DATA_DIR
-
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path, exist_ok=True)
-        print(f"[INFO] Created missing folder: {folder_path}")
-        return []
 
     all_files = os.listdir(folder_path)
     files = [f for f in all_files if f.lower().endswith(file_type)]
@@ -37,8 +30,8 @@ def _get_documents_from_folder(folder_path=None, file_type=".pdf"):
         return []
 
     documents = []
-    for filename in files:
-        file_path = os.path.join(folder_path, filename)
+    for file in files:
+        file_path = os.path.join(folder_path, file)
         documents.extend(_parse_document(file_path))
 
     print(f"[INFO] Loaded {len(documents)} pages from {len(files)} files.")
@@ -92,13 +85,13 @@ def _create_vector_stores(documents):
     return vector_store
 
 
-def _documents_ingest(folder_path=None, file_type=".pdf"):
+def _documents_ingest(folder_path, file_type=".pdf"):
     """Ingest documents from folder and build vector store."""
     documents = _get_documents_from_folder(folder_path, file_type)
     return _create_vector_stores(documents)
 
 
-def get_vector_stores(replace=False, folder_path=None, file_type=".pdf"):
+def get_vector_stores(folder_path=None, replace=False, file_type=".pdf"):
     """Get or create a FAISS vector store, optionally replacing existing one."""
     from langchain_huggingface import HuggingFaceEmbeddings
     from langchain_community.vectorstores import FAISS
@@ -110,8 +103,8 @@ def get_vector_stores(replace=False, folder_path=None, file_type=".pdf"):
         model_name="sentence-transformers/all-mpnet-base-v2",
         model_kwargs={"device": "cpu"}
     )
-    vector_store_path = os.path.join(folder_path, f"{file_type.strip('.')}_docs_vector")
-
+    
+    vector_store_path = os.path.join(VECTOR_DIR, f"{file_type.strip('.')}_docs_vector")
     is_vector_exists = os.path.exists(vector_store_path)
 
     if replace or not is_vector_exists:

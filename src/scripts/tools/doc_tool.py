@@ -1,6 +1,6 @@
 from langchain.tools.retriever import create_retriever_tool
 from scripts.utils.vector_stores import get_vector_stores
-from scripts.inputs import DOCUMENTS_TOOL_PROMPT
+from scripts.inputs.prompts_main import DOCUMENTS_TOOL_PROMPT
 
 
 def get_doc_tool(top_k=5):
