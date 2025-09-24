@@ -7,7 +7,8 @@ __pycache__/
 *.pyo
 
 # big files
-src/data/processed/*
-src/data/raw/*
+src/data/processed/pdf_docs_vector
+src/data/processed/fraudDB.db
+src/data/raw/*.csv
 App Demo Original.mkv
 Fraud Chatbot Demo.mp4
