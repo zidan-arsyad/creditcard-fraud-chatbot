@@ -71,8 +71,8 @@ src/data/raw/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/creditcard-fraud-chat.git
-cd creditcard-fraud-chat
+git clone https://github.com/zidan-arsyad/creditcard-fraud-chatbot.git
+cd creditcard-fraud-chatbot
 ```
 
 2. Install dependencies:
@@ -93,10 +93,11 @@ export LANGSMITH_API_KEY=your_langsmith_key  # optional
 ```bash
 # Simple mode
 streamlit run src/start_simple.py
-
-# Advanced mode
-streamlit run src/start_adv.py # [in construction] wait until this README.md gets updated again
 ```
+
+<!-- # Advanced mode
+streamlit run src/start_adv.py # [in construction] wait until this README.md gets updated again
+``` -->
 
 <!-- ## 🧠 Simple vs Advanced Mode
 
@@ -111,7 +112,7 @@ streamlit run src/start_adv.py # [in construction] wait until this README.md get
 |-------------|---------------|
 | ![Simple](https://i.pinimg.com/474x/16/3d/cb/163dcb920d747eb5e11490f8551561b8.jpg) | ![Advanced](https://camo.githubusercontent.com/3396240bff15f09c0c6ab76bc471043812867b5d2ee8fc9588da0f3785b8feef/68747470733a2f2f692e70696e696d672e636f6d2f343734782f64342f63612f64332f64346361643363653832393165393735393633313036643665353966333239362e6a7067) | -->
 
-## 💡 How It Works (Simple)
+## ⚙️ How It Works (Simple)
 
 1. **User Input Processing**: The system receives natural language queries about credit card fraud.
 
@@ -137,6 +138,13 @@ streamlit run src/start_adv.py # [in construction] wait until this README.md get
 - "Calculate the fraud rate for transactions above $1000."
 - "List top 10 highest-risk users in the last 30 days."
 
+## 💡 What's Next?
+
+- Add a tool to predict new data based on a data science model
+- Improve agent response time by implementing memory on tools
+- New feature that lets users upload their own fraud related documents for additional references
+- Implement correct response streaming from agent
+
 ## 🙏 Acknowledgments
 
 - Mekari for the opportunity
@@ -145,4 +153,3 @@ streamlit run src/start_adv.py # [in construction] wait until this README.md get
 - Hugging Face for embeddings
 - FAISS for vector similarity search
 - LangSmith for visibility monitoring
-
