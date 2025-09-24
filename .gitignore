@@ -2,7 +2,6 @@
 .env
 
 # python things
-create_inits.py
 __pycache__/
 *.pyc
 *.pyo
@@ -12,6 +11,3 @@ src/data/processed/*
 src/data/raw/*
 App Demo Original.mkv
 Fraud Chatbot Demo.mp4
-
-# unused files
-src/scripts/inputs/prompts_legacy.py
